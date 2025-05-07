@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Spinner : MonoBehaviour
+public class Spinner : StageObject
 {
     public Transform redBlock;
     public Transform greenBlock;
@@ -9,6 +9,8 @@ public class Spinner : MonoBehaviour
     public float rotationSpeed = 100;
     public float blockPlacementRadius = 1;
     public float blockPlacementY = 1;
+
+    protected override int IntroductionStage => 1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

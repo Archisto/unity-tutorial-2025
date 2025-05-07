@@ -62,4 +62,8 @@ public class Spinner : StageObject
 
         transform.rotation = Quaternion.Euler(newRotation);
     }
+
+    public override void HandleStageChange(int stageNumber)
+    {
+    }
 }

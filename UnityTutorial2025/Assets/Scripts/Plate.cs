@@ -7,25 +7,45 @@ public class Plate : MonoBehaviour
 
     private GameManager gameManager;
     private MeshRenderer meshRenderer;
+    private Material defaultMaterial;
     private Block.Colors color;
     private Block[] blocks;
     private Block blockOnPlate;
+    private bool isSimple;
     private bool isBlockHandled;
+
+    public void InitSimple()
+    {
+        isSimple = true;
+    }
 
     public void Init(Material material, Block.Colors color, Block[] blocks)
     {
         gameManager = FindAnyObjectByType<GameManager>();
         meshRenderer = GetComponent<MeshRenderer>();
+        defaultMaterial = meshRenderer.material;
         SetMaterial(material);
         this.color = color;
         this.blocks = blocks;
         blockOnPlate = GetComponentInChildren<Block>(true);
     }
 
+    public void MakeSimple()
+    {
+        if (isSimple)
+        {
+            return;
+        }
+
+        isSimple = true;
+        SetMaterial(defaultMaterial);
+        blockOnPlate.gameObject.SetActive(false);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (!isBlockHandled)
+        if (!isSimple && !isBlockHandled)
         {
             CheckBlockProximity();
         }
@@ -65,6 +85,11 @@ public class Plate : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (isSimple)
+        {
+            return;
+        }
+
         Gizmos.color = Color.gray;
         Gizmos.DrawWireSphere(transform.position, triggerProximity);
     }

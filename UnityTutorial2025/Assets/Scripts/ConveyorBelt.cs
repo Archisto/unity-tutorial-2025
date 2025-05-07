@@ -13,6 +13,7 @@ public class ConveyorBelt : StageObject
     public Vector3 move;
     public float spawnDelay;
 
+    private GameManager gameManager;
     private List<Plate> plates = new List<Plate>(10);
     private Block[] blocks;
     private List<Material> materials;
@@ -20,9 +21,12 @@ public class ConveyorBelt : StageObject
 
     protected override int IntroductionStage => 2;
 
+    private int AdvancedStage => 3;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        gameManager = FindFirstObjectByType<GameManager>();
         blocks = FindObjectsByType<Block>(FindObjectsSortMode.None);
 
         materials = new List<Material>
@@ -55,7 +59,16 @@ public class ConveyorBelt : StageObject
     {
         int randomNum = Random.Range(0, 4);
         Plate newPlate = Instantiate(objectPrefab);
-        newPlate.Init(materials[randomNum], (Block.Colors)(randomNum + 1), blocks);
+
+        if (gameManager.CurrentStage < AdvancedStage)
+        {
+            newPlate.InitSimple();
+        }
+        else
+        {
+            newPlate.Init(materials[randomNum], (Block.Colors)(randomNum + 1), blocks);
+        }
+
         newPlate.transform.position = spawnPoint.position;
         plates.Add(newPlate);
     }
@@ -73,12 +86,17 @@ public class ConveyorBelt : StageObject
         }
     }
 
-    public override void Show(int stageNumber)
+    public override void HandleStageChange(int stageNumber)
     {
         bool show = stageNumber >= IntroductionStage;
 
         foreach (Plate plate in plates)
         {
+            if (show && stageNumber < AdvancedStage)
+            {
+                plate.MakeSimple();
+            }
+
             plate.gameObject.SetActive(show);
         }
 

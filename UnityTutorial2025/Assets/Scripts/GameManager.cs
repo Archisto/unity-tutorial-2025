@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     public int defaultStage = 7;
     public int score;
 
+    public int CurrentStage { get; private set; } = 7;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,8 +28,9 @@ public class GameManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha6)) stageNumber = 6;
         else if (Input.GetKeyDown(KeyCode.Alpha7)) stageNumber = 7;
 
-        if (stageNumber > 0)
+        if (stageNumber > 0 && stageNumber != CurrentStage)
         {
+            CurrentStage = stageNumber;
             SetStage(stageNumber);
         }
     }
@@ -36,7 +39,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (StageObject stageObject in stageObjects)
         {
-            stageObject.Show(stageNumber);
+            stageObject.HandleStageChange(stageNumber);
         }
     }
 

@@ -221,7 +221,7 @@ MonoBehaviour:
   redMaterial: {fileID: 2100000, guid: 047bced4d542e4a43b7573775668e709, type: 2}
   greenMaterial: {fileID: 2100000, guid: 05d0751b3c191c54c9b3fb70d4a30a11, type: 2}
   blueMaterial: {fileID: 2100000, guid: 531f16dc3da2aa24cbef2d4eebd09005, type: 2}
-  jokerMaterial: {fileID: 2100000, guid: f56f1502f5d1e724f98bc434a24c0c5b, type: 2}
+  jokerMaterial: {fileID: 2100000, guid: e320dcb26932b03409f7222cef48385c, type: 2}
   spawnPoint: {fileID: 1203344236379597224}
   endPoint: {fileID: 9040234477599673981}
   move: {x: 6, y: 0, z: 0}

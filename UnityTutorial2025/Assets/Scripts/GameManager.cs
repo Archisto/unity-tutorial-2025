@@ -3,15 +3,20 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public List<StageObject> stageObjects = new List<StageObject>(7);
     public int defaultStage = 7;
     public int score;
+
+    private UIManager UI;
+    private StageObject[] stageObjects;
 
     public int CurrentStage { get; private set; } = 7;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        UI = FindFirstObjectByType<UIManager>();
+        stageObjects = FindObjectsByType<StageObject>(FindObjectsSortMode.None);
+
         SetStage(defaultStage);
     }
 
@@ -46,5 +51,6 @@ public class GameManager : MonoBehaviour
     public void GainScore(int score)
     {
         this.score += score;
+        UI.UpdateScoreText(this.score);
     }
 }

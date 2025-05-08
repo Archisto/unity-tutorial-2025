@@ -17,6 +17,7 @@ public class ConveyorBelt : StageObject
     private List<Plate> plates = new List<Plate>(10);
     private Block[] blocks;
     private List<Material> materials;
+    private IntClusterRow colorNumRow;
     private float elapsedTime;
 
     protected override int IntroductionStage => 2;
@@ -36,13 +37,20 @@ public class ConveyorBelt : StageObject
             blueMaterial,
             jokerMaterial
         };
+
+        colorNumRow = new IntClusterRow(
+            (1, 2),
+            (2, 2),
+            (3, 2),
+            (4, 1)
+        );
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdatePlateSpawner();
-        MoveObjectsAlong();
+        MoveObjects(move);
     }
 
     private void UpdatePlateSpawner()
@@ -57,23 +65,23 @@ public class ConveyorBelt : StageObject
 
     private void SpawnPlate()
     {
-        int randomNum = Random.Range(0, 4);
+        int colorNum = colorNumRow.GetRandom().GetValueOrDefault();
         Plate newPlate = Instantiate(objectPrefab);
 
-        if (gameManager.CurrentStage < AdvancedStage)
+        if (gameManager.CurrentStage < AdvancedStage || colorNum <= 0)
         {
             newPlate.InitSimple();
         }
         else
         {
-            newPlate.Init(materials[randomNum], (Block.Colors)(randomNum + 1), blocks);
+            newPlate.Init(materials[colorNum - 1], (Block.Colors)colorNum, blocks);
         }
 
         newPlate.transform.position = spawnPoint.position;
         plates.Add(newPlate);
     }
 
-    private void MoveObjectsAlong()
+    private void MoveObjects(Vector3 move)
     {
         for (int i = plates.Count - 1; i >= 0; i--)
         {

@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class Plate : MonoBehaviour
 {
+    public Block.Colors color;
     public float triggerProximity = 3;
 
     private GameManager gameManager;
     private MeshRenderer meshRenderer;
     private Material defaultMaterial;
-    private Block.Colors color;
     private Block[] blocks;
     private Block blockOnPlate;
     private bool isSimple;
@@ -39,6 +39,7 @@ public class Plate : MonoBehaviour
 
         isSimple = true;
         SetMaterial(defaultMaterial);
+        color = Block.Colors.None;
         blockOnPlate.gameObject.SetActive(false);
     }
 

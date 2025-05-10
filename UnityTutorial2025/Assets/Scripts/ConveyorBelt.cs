@@ -10,6 +10,7 @@ public class ConveyorBelt : StageObject
     public Material jokerMaterial;
     public Transform spawnPoint;
     public Transform endPoint;
+    public Transform scoringAreaEndPoint;
     public Vector3 move;
     public float spawnDelay;
 
@@ -49,6 +50,11 @@ public class ConveyorBelt : StageObject
     // Update is called once per frame
     void Update()
     {
+        if (gameManager.IsGameOver)
+        {
+            return;
+        }
+
         UpdatePlateSpawner();
         MoveObjects(move);
     }
@@ -86,12 +92,27 @@ public class ConveyorBelt : StageObject
         for (int i = plates.Count - 1; i >= 0; i--)
         {
             plates[i].Move(move);
+
             if (plates[i].IsOverLimit(endPoint.position.x))
             {
                 Destroy(plates[i].gameObject);
                 plates.RemoveAt(i);
             }
+            else if (plates[i].HasPassedScoringAreaWithoutBlock(scoringAreaEndPoint.position.x))
+            {
+                gameManager.LoseLife();
+            }
         }
+    }
+
+    public void DestroyPlates()
+    {
+        for (int i = plates.Count - 1; i >= 0; i--)
+        {
+            Destroy(plates[i].gameObject);
+        }
+
+        plates.Clear();
     }
 
     public override void HandleStageChange(int stageNumber)

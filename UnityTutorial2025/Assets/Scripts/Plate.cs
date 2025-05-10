@@ -5,6 +5,7 @@ public class Plate : MonoBehaviour
 {
     public Block.Colors color;
     public float triggerProximity = 3;
+    public int score = 1;
 
     private GameManager gameManager;
     private MeshRenderer meshRenderer;
@@ -69,7 +70,11 @@ public class Plate : MonoBehaviour
 
             if (color == Block.Colors.Any || nearBlock.color == color)
             {
-                gameManager.GainScore(1);
+                gameManager.GainScore(score);
+            }
+            else
+            {
+                gameManager.LoseLife();
             }
         }
     }
@@ -77,6 +82,18 @@ public class Plate : MonoBehaviour
     public bool IsOverLimit(float maxX)
     {
         return transform.position.x > maxX;
+    }
+
+    public bool HasPassedScoringAreaWithoutBlock(float maxX)
+    {
+        if (!isBlockHandled && IsOverLimit(maxX))
+        {
+            isBlockHandled = true;
+            return true;
+        }
+
+        return false;
+
     }
 
     public void SetMaterial(Material material)

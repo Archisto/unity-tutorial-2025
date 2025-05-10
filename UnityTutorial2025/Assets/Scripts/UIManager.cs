@@ -3,14 +3,21 @@ using UnityEngine;
 
 public class UIManager : StageObject
 {
+    public TextMeshProUGUI livesText;
     public TextMeshProUGUI scoreText;
+
+    private int livesIntroductionStage;
 
     protected override int IntroductionStage => 3;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Init(int livesIntroductionStage)
     {
-        UpdateScoreText(0);
+        this.livesIntroductionStage = livesIntroductionStage;
+    }
+
+    public void UpdateLivesText(int lives)
+    {
+        livesText.text = $"[{lives}]";
     }
 
     public void UpdateScoreText(int score)
@@ -20,6 +27,7 @@ public class UIManager : StageObject
 
     public override void HandleStageChange(int stageNumber)
     {
+        livesText.gameObject.SetActive(stageNumber >= livesIntroductionStage);
         scoreText.gameObject.SetActive(stageNumber >= IntroductionStage);
     }
 }
